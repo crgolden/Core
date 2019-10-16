@@ -24,7 +24,7 @@
                     options: new ElasticsearchSinkOptions(context.Configuration.GetLogNodes())
                     {
                         AutoRegisterTemplate = true,
-                        AutoRegisterTemplateVersion = ESv6,
+                        AutoRegisterTemplateVersion = ESv7,
                         IndexFormat = $"{appName.ToLowerInvariant().Replace('.', '-')}-logs",
                         CustomFormatter = new ExceptionAsObjectJsonFormatter(renderMessage: true),
                         ModifyConnectionSettings = x => x.ServerCertificateValidationCallback(

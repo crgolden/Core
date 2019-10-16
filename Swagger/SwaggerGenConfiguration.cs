@@ -50,7 +50,11 @@
             foreach (var description in _apiVersionDescriptionProvider.ApiVersionDescriptions)
             {
                 _info.Version = $"{description.ApiVersion}";
-                if (description.IsDeprecated) _info.Description += " This API version has been deprecated.";
+                if (description.IsDeprecated)
+                {
+                    _info.Description += " This API version has been deprecated.";
+                }
+
                 options.SwaggerDoc(description.GroupName, _info);
                 options.AddSecurityDefinition(_defaultScheme, _apiKeyScheme);
             }

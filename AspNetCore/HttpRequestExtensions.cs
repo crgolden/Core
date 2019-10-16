@@ -9,7 +9,6 @@
         public static string GetOrigin(this HttpRequest request)
         {
             string origin;
-
             if (request.Headers.TryGetValue(Referer, out var referer))
             {
                 var uri = new Uri(referer);
