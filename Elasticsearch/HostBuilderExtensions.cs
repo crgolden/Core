@@ -1,5 +1,6 @@
 ﻿namespace Core
 {
+    using System.Globalization;
     using Microsoft.Extensions.Hosting;
     using Serilog;
     using Serilog.Formatting.Elasticsearch;
@@ -25,7 +26,7 @@
                     {
                         AutoRegisterTemplate = true,
                         AutoRegisterTemplateVersion = ESv7,
-                        IndexFormat = $"{appName.ToLowerInvariant().Replace('.', '-')}-logs",
+                        IndexFormat = $"{appName.ToLower(CultureInfo.CurrentCulture).Replace('.', '-')}-logs",
                         CustomFormatter = new ExceptionAsObjectJsonFormatter(renderMessage: true),
                         ModifyConnectionSettings = x => x.ServerCertificateValidationCallback(
                             (o, certificate, arg3, arg4) => serverCertificateValidationOverride ?? arg4 == None)

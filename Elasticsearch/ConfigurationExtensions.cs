@@ -9,6 +9,11 @@
     {
         public static IEnumerable<Uri> GetLogNodes(this IConfiguration configuration)
         {
+            if (configuration == default)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
             var logNodes = Array.Empty<Uri>();
             var section = configuration.GetSection(nameof(ElasticsearchOptions));
             if (!section.Exists())

@@ -1,5 +1,6 @@
 ﻿namespace Core
 {
+    using System;
     using Microsoft.Azure.KeyVault;
     using Microsoft.Azure.Services.AppAuthentication;
     using Microsoft.Extensions.Configuration;
@@ -7,8 +8,13 @@
 
     public static class ConfigurationBuilderExtensions
     {
-        public static IConfigurationBuilder AddAzureKeyVault(this IConfigurationBuilder configBuilder)
+        public static IConfigurationBuilder AddAzureKeyVault(this IConfigurationBuilder? configBuilder)
         {
+            if (configBuilder == default)
+            {
+                throw new ArgumentNullException(nameof(configBuilder));
+            }
+
             var configRoot = configBuilder.Build();
             var keyVaultName = configRoot.GetValue<string>("KeyVaultName");
             if (string.IsNullOrEmpty(keyVaultName))

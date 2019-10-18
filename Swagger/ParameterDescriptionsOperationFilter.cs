@@ -1,5 +1,6 @@
 ﻿namespace Core
 {
+    using System;
     using System.Linq;
     using Microsoft.AspNetCore.Mvc.ApiExplorer;
     using Swashbuckle.AspNetCore.Swagger;
@@ -7,8 +8,18 @@
 
     public class ParameterDescriptionsOperationFilter : IOperationFilter
     {
-        public void Apply(Operation operation, OperationFilterContext context)
+        public void Apply(Operation? operation, OperationFilterContext? context)
         {
+            if (operation == default)
+            {
+                throw new ArgumentNullException(nameof(operation));
+            }
+
+            if (context == default)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             operation.Deprecated |= context.ApiDescription.IsDeprecated();
             if (operation.Parameters == null)
             {

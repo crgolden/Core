@@ -1,5 +1,6 @@
 ﻿namespace Core
 {
+    using System;
     using Microsoft.AspNetCore.Mvc.ApiExplorer;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Options;
@@ -14,11 +15,16 @@
         private readonly Info _info;
 
         public SwaggerGenConfiguration(
-            IApiVersionDescriptionProvider apiVersionDescriptionProvider,
-            IOptions<SwaggerOptions> swaggerOptions)
+            IApiVersionDescriptionProvider? apiVersionDescriptionProvider,
+            IOptions<SwaggerOptions>? swaggerOptions)
         {
-            _apiVersionDescriptionProvider = apiVersionDescriptionProvider;
-            _defaultScheme = swaggerOptions.Value?.DefaultScheme;
+            _apiVersionDescriptionProvider = apiVersionDescriptionProvider ?? throw new ArgumentNullException(nameof(apiVersionDescriptionProvider));
+            if (swaggerOptions?.Value == default)
+            {
+                throw new ArgumentNullException(nameof(swaggerOptions));
+            }
+
+            _defaultScheme = swaggerOptions.Value.DefaultScheme;
             _apiKeyScheme = new ApiKeyScheme
             {
                 Name = swaggerOptions.Value?.ApiKeySchemeName,
@@ -35,18 +41,23 @@
                 {
                     Name = swaggerOptions.Value?.ContactName,
                     Email = swaggerOptions.Value?.ContactEmail,
-                    Url = swaggerOptions.Value?.ContactUrl
+                    Url = $"{swaggerOptions.Value?.ContactUrl}"
                 },
                 License = new License
                 {
                     Name = swaggerOptions.Value?.LicenseName,
-                    Url = swaggerOptions.Value?.LicenseUrl
+                    Url = $"{swaggerOptions.Value?.LicenseUrl}"
                 }
             };
         }
 
-        public void Configure(SwaggerGenOptions options)
+        public void Configure(SwaggerGenOptions? options)
         {
+            if (options == default)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             foreach (var description in _apiVersionDescriptionProvider.ApiVersionDescriptions)
             {
                 _info.Version = $"{description.ApiVersion}";

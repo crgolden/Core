@@ -1,5 +1,6 @@
 ﻿namespace Core
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Microsoft.AspNetCore.Authorization;
@@ -8,9 +9,19 @@
 
     public class SecurityRequirementsOperationFilter : IOperationFilter
     {
-        public void Apply(Operation operation, OperationFilterContext context)
+        public void Apply(Operation? operation, OperationFilterContext? context)
         {
-            var controllerAttributes = context?
+            if (operation == default)
+            {
+                throw new ArgumentNullException(nameof(operation));
+            }
+
+            if (context == default)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            var controllerAttributes = context
                 .MethodInfo?
                 .DeclaringType?
                 .GetCustomAttributes(true);
@@ -22,7 +33,7 @@
                 .OfType<AuthorizeAttribute>()
                 .Where(x => !string.IsNullOrEmpty(x.Roles))
                 .Select(x => x.Roles);
-            var methodAttributes = context?
+            var methodAttributes = context
                 .MethodInfo?
                 .CustomAttributes
                 .ToArray();
@@ -39,8 +50,8 @@
             var attributes = controllerAuthorizeRoleAttributes?
                 .Union(controllerAuthorizePolicyAttributes)
                 .Union(methodAuthorizeAttributes)
-                .ToArray();
-            if (!attributes?.Any() == true)
+                .ToArray() ?? Array.Empty<string>();
+            if (!attributes.Any())
             {
                 return;
             }

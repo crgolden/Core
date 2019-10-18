@@ -8,6 +8,11 @@
     {
         public static string GetOrigin(this HttpRequest request)
         {
+            if (request == default)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
             string origin;
             if (request.Headers.TryGetValue(Referer, out var referer))
             {

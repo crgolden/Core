@@ -1,5 +1,6 @@
 ﻿namespace Core
 {
+    using System;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -11,6 +12,11 @@
 
         public void OnPageHandlerExecuting(PageHandlerExecutingContext context)
         {
+            if (context == default)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             if (context.ModelState.IsValid)
             {
                 return;
