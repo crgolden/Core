@@ -5,9 +5,12 @@
     using Microsoft.AspNetCore.Mvc.ApiExplorer;
     using Swashbuckle.AspNetCore.Swagger;
     using Swashbuckle.AspNetCore.SwaggerGen;
+    using static System.String;
 
+    /// <inheritdoc />
     public class ParameterDescriptionsOperationFilter : IOperationFilter
     {
+        /// <inheritdoc />
         public void Apply(Operation? operation, OperationFilterContext? context)
         {
             if (operation == default)
@@ -29,7 +32,7 @@
             foreach (var parameter in operation.Parameters.OfType<NonBodyParameter>())
             {
                 var description = context.ApiDescription.ParameterDescriptions.First(p => p.Name == parameter.Name);
-                if (string.IsNullOrEmpty(parameter.Description))
+                if (IsNullOrEmpty(parameter.Description))
                 {
                     parameter.Description = description.ModelMetadata?.Description;
                 }

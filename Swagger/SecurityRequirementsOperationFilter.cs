@@ -6,9 +6,14 @@
     using Microsoft.AspNetCore.Authorization;
     using Swashbuckle.AspNetCore.Swagger;
     using Swashbuckle.AspNetCore.SwaggerGen;
+    using static System.Array;
+    using static System.Net.HttpStatusCode;
+    using static System.String;
 
+    /// <inheritdoc />
     public class SecurityRequirementsOperationFilter : IOperationFilter
     {
+        /// <inheritdoc />
         public void Apply(Operation? operation, OperationFilterContext? context)
         {
             if (operation == default)
@@ -27,11 +32,11 @@
                 .GetCustomAttributes(true);
             var controllerAuthorizePolicyAttributes = controllerAttributes?
                 .OfType<AuthorizeAttribute>()
-                .Where(x => !string.IsNullOrEmpty(x.Policy))
+                .Where(x => !IsNullOrEmpty(x.Policy))
                 .Select(x => x.Policy);
             var controllerAuthorizeRoleAttributes = controllerAttributes?
                 .OfType<AuthorizeAttribute>()
-                .Where(x => !string.IsNullOrEmpty(x.Roles))
+                .Where(x => !IsNullOrEmpty(x.Roles))
                 .Select(x => x.Roles);
             var methodAttributes = context
                 .MethodInfo?
@@ -50,14 +55,14 @@
             var attributes = controllerAuthorizeRoleAttributes?
                 .Union(controllerAuthorizePolicyAttributes)
                 .Union(methodAuthorizeAttributes)
-                .ToArray() ?? Array.Empty<string>();
+                .ToArray() ?? Empty<string>();
             if (!attributes.Any())
             {
                 return;
             }
 
-            operation.Responses.Add("401", new Response { Description = "Unauthorized" });
-            operation.Responses.Add("403", new Response { Description = "Forbidden" });
+            operation.Responses.Add($"{(int)Unauthorized}", new Response { Description = $"{Unauthorized}" });
+            operation.Responses.Add($"{(int)Forbidden}", new Response { Description = $"{Forbidden}" });
             operation.Security = new List<IDictionary<string, IEnumerable<string>>>
             {
                 new Dictionary<string, IEnumerable<string>>

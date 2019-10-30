@@ -16,12 +16,12 @@
             _serviceProvider = serviceProvider;
         }
 
-        public ITelemetryProcessor Create(ITelemetryProcessor next)
+        public ITelemetryProcessor Create(ITelemetryProcessor nextProcessor)
         {
             var options = _serviceProvider.GetService<IOptions<SnapshotCollectorConfiguration>>();
             return options != null
-                ? new SnapshotCollectorTelemetryProcessor(next, options.Value)
-                : new SnapshotCollectorTelemetryProcessor(next);
+                ? new SnapshotCollectorTelemetryProcessor(nextProcessor, options.Value)
+                : new SnapshotCollectorTelemetryProcessor(nextProcessor);
         }
     }
 }

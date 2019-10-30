@@ -127,6 +127,8 @@ _TeamCity*
 
 # DotCover is a Code Coverage Tool
 *.dotCover
+dotCover/
+dotCover.*
 
 # AxoCover is a Code Coverage Tool
 .axoCover/*
@@ -316,6 +318,9 @@ __pycache__/
 
 # OpenCover UI analysis results
 OpenCover/
+
+# SonarQube
+.sonarqube/
 
 # Azure Stream Analytics local run output 
 ASALocalRun/
