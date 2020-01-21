@@ -2,43 +2,72 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using JetBrains.Annotations;
+    using Microsoft.OpenApi.Models;
+    using Swashbuckle.AspNetCore.SwaggerGen;
+    using Swashbuckle.AspNetCore.SwaggerUI;
+    using static Microsoft.OpenApi.Models.ParameterLocation;
+    using static Microsoft.OpenApi.Models.SecuritySchemeType;
 
+    /// <summary>Configuration settings for the <see cref="SwaggerGenOptions"/> and <see cref="SwaggerUIOptions"/> classes.</summary>
+    [PublicAPI]
     public class SwaggerOptions
     {
-        public string? Title { get; set; }
+        /// <summary>Gets or sets the route prefix.</summary>
+        /// <value>The route prefix.</value>
+        public string? RoutePrefix { get; set; }
 
-        public string? Description { get; set; }
+        /// <summary>Gets or sets the XML comments file path.</summary>
+        /// <value>The XML comments file path.</value>
+        public string? XmlCommentsFilePath { get; set; }
 
-        public string TermsOfService { get; set; } = "Shareware";
-
-        public string? ContactName { get; set; }
-
-        public string? ContactEmail { get; set; }
-
-        public Uri? ContactUrl { get; set; }
-
-        public string LicenseName { get; set; } = "MIT";
-
+        /// <summary>Gets or sets the <see cref="OpenApiInfo"/>.</summary>
+        /// <value>The <see cref="OpenApiInfo"/>.</value>
         [SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "Default MIT license URL provided")]
-        public Uri LicenseUrl { get; set; } = new Uri("https://opensource.org/licenses/MIT");
+        public OpenApiInfo Info { get; set; } = new OpenApiInfo
+        {
+            Contact = new OpenApiContact(),
+            License = new OpenApiLicense
+            {
+                Url = new Uri("https://opensource.org/licenses/MIT")
+            }
+        };
 
-        public string DefaultScheme { get; set; } = "Bearer";
+        /// <summary>Gets or sets the default authentication scheme.</summary>
+        /// <value>The default authentication scheme.</value>
+        public string? DefaultScheme { get; set; } = "Bearer";
 
-        public string ApiKeySchemeType { get; set; } = "apiKey";
+        /// <summary>Gets or sets the <see cref="OpenApiSecurityScheme"/>.</summary>
+        /// <value>The <see cref="OpenApiSecurityScheme"/>.</value>
+        public OpenApiSecurityScheme SecurityScheme { get; set; } = new OpenApiSecurityScheme
+        {
+            Name = "Authorization",
+            In = Header,
+            Type = ApiKey
+        };
 
-        public string ApiKeySchemeIn { get; set; } = "Header";
+        /// <summary>Gets or sets a value indicating whether to use OData.</summary>
+        /// <value>The use OData flag.</value>
+        public bool UseOData { get; set; }
 
-        public string ApiKeySchemeName { get; set; } = "Authorization";
-
-        public string? ApiKeySchemeDescription { get; set; }
-
+        /// <summary>Gets or sets a value indicating whether to assume default version when unspecified.</summary>
+        /// <value>The assume default version when unspecified flag.</value>
         // https://github.com/microsoft/aspnet-api-versioning/wiki/API-Versioning-Options#assume-default-version-when-unspecified
         public bool AssumeDefaultVersionWhenUnspecified { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether to report API versions.</summary>
+        /// <value>The report API versions flag.</value>
         // https://github.com/microsoft/aspnet-api-versioning/wiki/API-Versioning-Options#report-api-versions
         public bool ReportApiVersions { get; set; } = true;
 
+        /// <summary>Gets or sets the group name format.</summary>
+        /// <value>The group name format.</value>
         // https://github.com/microsoft/aspnet-api-versioning/wiki/Version-Format
         public string GroupNameFormat { get; set; } = "'v'VVV";
+
+        /// <summary>Gets or sets a value indicating whether to substitute the API version in the URL.</summary>
+        /// <value>The substitute the API version in the URL flag.</value>
+        // https://github.com/microsoft/aspnet-api-versioning/wiki/Versioning-via-the-URL-Path
+        public bool SubstituteApiVersionInUrl { get; set; }
     }
 }

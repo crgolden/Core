@@ -1,17 +1,20 @@
-﻿namespace Core
+﻿namespace Core.OperationFilters
 {
     using System;
     using System.Linq;
+    using JetBrains.Annotations;
     using Microsoft.AspNetCore.Mvc.ApiExplorer;
-    using Swashbuckle.AspNetCore.Swagger;
+    using Microsoft.OpenApi.Any;
+    using Microsoft.OpenApi.Models;
     using Swashbuckle.AspNetCore.SwaggerGen;
     using static System.String;
 
     /// <inheritdoc />
-    public class ParameterDescriptionsOperationFilter : IOperationFilter
+    [UsedImplicitly]
+    internal class ParameterDescriptionsOperationFilter : IOperationFilter
     {
         /// <inheritdoc />
-        public void Apply(Operation? operation, OperationFilterContext? context)
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
             if (operation == default)
             {
@@ -29,7 +32,7 @@
                 return;
             }
 
-            foreach (var parameter in operation.Parameters.OfType<NonBodyParameter>())
+            foreach (var parameter in operation.Parameters)
             {
                 var description = context.ApiDescription.ParameterDescriptions.First(p => p.Name == parameter.Name);
                 if (IsNullOrEmpty(parameter.Description))
@@ -37,9 +40,9 @@
                     parameter.Description = description.ModelMetadata?.Description;
                 }
 
-                if (parameter.Default == null)
+                if (parameter.Schema.Default == default && description.DefaultValue != default)
                 {
-                    parameter.Default = description.DefaultValue;
+                    parameter.Schema.Default = new OpenApiString(description.DefaultValue.ToString());
                 }
 
                 parameter.Required |= description.IsRequired;
