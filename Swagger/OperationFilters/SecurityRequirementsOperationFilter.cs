@@ -57,7 +57,7 @@
                 .Union(controllerAttributes.Select(y => y.Roles))
                 .Union(methodAttributes.Select(y => y.Policy))
                 .Union(methodAttributes.Select(y => y.Roles))
-                .Where(x => !IsNullOrEmpty(x) && !IsNullOrWhiteSpace(x))
+                .Where(x => !IsNullOrWhiteSpace(x))
                 .Distinct()
                 .ToArray();
             operation.Responses ??= new OpenApiResponses();

@@ -35,7 +35,7 @@
             foreach (var parameter in operation.Parameters)
             {
                 var description = context.ApiDescription.ParameterDescriptions.First(p => p.Name == parameter.Name);
-                if (IsNullOrEmpty(parameter.Description))
+                if (IsNullOrWhiteSpace(parameter.Description))
                 {
                     parameter.Description = description.ModelMetadata?.Description;
                 }

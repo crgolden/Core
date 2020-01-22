@@ -36,7 +36,7 @@
                 if (apiVersionDescription.IsDeprecated)
                 {
                     var sb = new StringBuilder();
-                    if (!IsNullOrEmpty(_options.Info.Description) && !IsNullOrWhiteSpace(_options.Info.Description))
+                    if (!IsNullOrWhiteSpace(_options.Info.Description))
                     {
                         sb.Append(_options.Info.Description);
                         sb.AppendLine();
@@ -49,13 +49,13 @@
                 options.SwaggerDoc(apiVersionDescription.GroupName, _options.Info);
             }
 
-            if (!IsNullOrEmpty(_options.DefaultScheme) && !IsNullOrWhiteSpace(_options.DefaultScheme))
+            if (!IsNullOrWhiteSpace(_options.DefaultScheme))
             {
                 options.AddSecurityDefinition(_options.DefaultScheme, _options.SecurityScheme);
                 options.OperationFilter<SecurityRequirementsOperationFilter>(_options.DefaultScheme);
             }
 
-            if (!IsNullOrEmpty(_options.XmlCommentsFilePath) && !IsNullOrWhiteSpace(_options.XmlCommentsFilePath))
+            if (!IsNullOrWhiteSpace(_options.XmlCommentsFilePath))
             {
                 options.IncludeXmlComments(_options.XmlCommentsFilePath);
             }
@@ -78,18 +78,18 @@
                 options.SwaggerEndpoint(url, name);
             }
 
-            if (!IsNullOrEmpty(_options.RoutePrefix) && !IsNullOrWhiteSpace(_options.RoutePrefix))
+            if (!IsNullOrWhiteSpace(_options.RoutePrefix))
             {
                 options.RoutePrefix = _options.RoutePrefix;
             }
 
-            if (IsNullOrEmpty(_options.Info?.Title) || IsNullOrWhiteSpace(_options.Info?.Title))
+            if (IsNullOrWhiteSpace(_options.Info?.Title))
             {
                 return;
             }
 
             var sb = new StringBuilder(_options.Info.Title);
-            if (!IsNullOrEmpty(_options.Info?.Description) && !IsNullOrWhiteSpace(_options.Info?.Description))
+            if (!IsNullOrWhiteSpace(_options.Info?.Description))
             {
                 sb.AppendLine();
                 sb.Append($"{_options.Info.Description}");
