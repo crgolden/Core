@@ -88,7 +88,7 @@
                 return;
             }
 
-            var sb = new StringBuilder(_options.Info.Title);
+            var sb = new StringBuilder(_options.Info?.Title);
             if (!IsNullOrWhiteSpace(_options.Info?.Description))
             {
                 sb.AppendLine();

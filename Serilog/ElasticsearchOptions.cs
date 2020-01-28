@@ -17,60 +17,6 @@
     [PublicAPI]
     public class ElasticsearchOptions
     {
-        public ElasticsearchOptions()
-        {
-            SinkOptions = new ElasticsearchSinkOptions(Nodes)
-            {
-                AutoRegisterTemplate = AutoRegisterTemplate,
-                AutoRegisterTemplateVersion = AutoRegisterTemplateVersion,
-                BatchPostingLimit = BatchPostingLimit,
-                BufferBaseFilename = BufferBaseFilename,
-                BufferCleanPayload = BufferCleanPayload,
-                BufferFileCountLimit = BufferFileCountLimit,
-                BufferFileSizeLimitBytes = BufferFileSizeLimitBytes,
-                BufferIndexDecider = BufferIndexDecider,
-                BufferLogShippingInterval = BufferLogShippingInterval,
-                BufferRetainedInvalidPayloadsLimitBytes = BufferRetainedInvalidPayloadsLimitBytes,
-                Connection = Connection,
-                ConnectionTimeout = ConnectionTimeout,
-                CustomDurableFormatter = CustomDurableFormatter,
-                CustomFormatter = CustomFormatter,
-                DeadLetterIndexName = DeadLetterIndexName,
-                DetectElasticsearchVersion = DetectElasticsearchVersion,
-                EmitEventFailure = EmitEventFailure,
-                FailureCallback = FailureCallback,
-                FailureSink = FailureSink,
-                FormatProvider = FormatProvider,
-                FormatStackTraceAsArray = FormatStackTraceAsArray,
-                GetTemplateContent = GetTemplateContent,
-                IndexDecider = IndexDecider,
-                IndexFormat = IndexFormat,
-                InlineFields = InlineFields,
-                LevelSwitch = LevelSwitch,
-                MinimumLogEventLevel = MinimumLogEventLevel,
-                ModifyConnectionSettings = ModifyConnectionSettings,
-                NumberOfReplicas = NumberOfReplicas,
-                NumberOfShards = NumberOfShards,
-                OverwriteTemplate = OverwriteTemplate,
-                Period = Period,
-                PipelineName = PipelineName,
-                PipelineNameDecider = PipelineNameDecider,
-                QueueSizeLimit = QueueSizeLimit,
-                RegisterTemplateFailure = RegisterTemplateFailure,
-                Serializer = Serializer,
-                SingleEventSizePostingLimit = SingleEventSizePostingLimit,
-                TemplateName = TemplateName,
-                TypeName = TypeName
-            };
-            if (!SinkOptions.ConnectionPool.UsingSsl)
-            {
-                SinkOptions.ModifyConnectionSettings = x =>
-                {
-                    return x.ServerCertificateValidationCallback((o, certificate, arg3, arg4) => arg4 == None);
-                };
-            }
-        }
-
         public Func<string, long?, string, string> BufferCleanPayload { get; set; }
 
         public Func<string, DateTime, string> BufferIndexDecider { get; set; }
@@ -85,25 +31,66 @@
 
         public Func<LogEvent, string> PipelineNameDecider { get; set; }
 
-        public string AdminUsername { get; set; }
-
-        public string AdminPassword { get; set; }
-
-        public string KibanaUsername { get; set; }
-
-        public string KibanaPassword { get; set; }
-
-        public string LogstashUsername { get; set; }
-
-        public string LogstashPassword { get; set; }
-
-        public string BeatsUsername { get; set; }
-
-        public string BeatsPassword { get; set; }
-
         public IList<Uri> Nodes { get; set; } = new List<Uri>();
 
-        public ElasticsearchSinkOptions SinkOptions { get; set; }
+        public ElasticsearchSinkOptions SinkOptions
+        {
+            get
+            {
+                var sinkOptions = new ElasticsearchSinkOptions(Nodes)
+                {
+                    AutoRegisterTemplate = AutoRegisterTemplate,
+                    AutoRegisterTemplateVersion = AutoRegisterTemplateVersion,
+                    BatchPostingLimit = BatchPostingLimit,
+                    BufferBaseFilename = BufferBaseFilename,
+                    BufferCleanPayload = BufferCleanPayload,
+                    BufferFileCountLimit = BufferFileCountLimit,
+                    BufferFileSizeLimitBytes = BufferFileSizeLimitBytes,
+                    BufferIndexDecider = BufferIndexDecider,
+                    BufferLogShippingInterval = BufferLogShippingInterval,
+                    BufferRetainedInvalidPayloadsLimitBytes = BufferRetainedInvalidPayloadsLimitBytes,
+                    Connection = Connection,
+                    ConnectionTimeout = ConnectionTimeout,
+                    CustomDurableFormatter = CustomDurableFormatter,
+                    CustomFormatter = CustomFormatter,
+                    DeadLetterIndexName = DeadLetterIndexName,
+                    DetectElasticsearchVersion = DetectElasticsearchVersion,
+                    EmitEventFailure = EmitEventFailure,
+                    FailureCallback = FailureCallback,
+                    FailureSink = FailureSink,
+                    FormatProvider = FormatProvider,
+                    FormatStackTraceAsArray = FormatStackTraceAsArray,
+                    GetTemplateContent = GetTemplateContent,
+                    IndexDecider = IndexDecider,
+                    IndexFormat = IndexFormat,
+                    InlineFields = InlineFields,
+                    LevelSwitch = LevelSwitch,
+                    MinimumLogEventLevel = MinimumLogEventLevel,
+                    ModifyConnectionSettings = ModifyConnectionSettings,
+                    NumberOfReplicas = NumberOfReplicas,
+                    NumberOfShards = NumberOfShards,
+                    OverwriteTemplate = OverwriteTemplate,
+                    Period = Period,
+                    PipelineName = PipelineName,
+                    PipelineNameDecider = PipelineNameDecider,
+                    QueueSizeLimit = QueueSizeLimit,
+                    RegisterTemplateFailure = RegisterTemplateFailure,
+                    Serializer = Serializer,
+                    SingleEventSizePostingLimit = SingleEventSizePostingLimit,
+                    TemplateName = TemplateName,
+                    TypeName = TypeName
+                };
+                if (!sinkOptions.ConnectionPool.UsingSsl)
+                {
+                    sinkOptions.ModifyConnectionSettings = x =>
+                    {
+                        return x.ServerCertificateValidationCallback((o, certificate, arg3, arg4) => arg4 == None);
+                    };
+                }
+
+                return sinkOptions;
+            }
+        }
 
         public bool AutoRegisterTemplate { get; set; }
 

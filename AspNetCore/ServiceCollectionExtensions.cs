@@ -18,17 +18,17 @@
                 .AddIdentityServerAuthentication(
                     authenticationScheme: defaultScheme,
                     configureOptions: options =>
-                {
-                    var identityServerAddress = configuration.GetValue<string>("IdentityServerAddress");
-                    if (string.IsNullOrEmpty(identityServerAddress))
                     {
-                        return;
-                    }
+                        var identityServerAddress = configuration.GetValue<string>("IdentityServerAddress");
+                        if (string.IsNullOrEmpty(identityServerAddress))
+                        {
+                            return;
+                        }
 
-                    options.Authority = identityServerAddress;
-                    options.ApiName = apiName;
-                    options.RoleClaimType = Role;
-                });
+                        options.Authority = identityServerAddress;
+                        options.ApiName = apiName;
+                        options.RoleClaimType = Role;
+                    });
             return services;
         }
     }
