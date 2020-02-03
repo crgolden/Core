@@ -9,7 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
-		.ruleset = .ruleset
 		Core.snk = Core.snk
 		deeprog.png = deeprog.png
 		NuGet.Config = NuGet.Config
@@ -29,7 +28,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.AspNetCore.Tests", "As
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Swagger.Tests", "Swagger.Tests\Core.Swagger.Tests.csproj", "{8D05E88C-5E99-4B34-9D1E-00A29F797A37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Serilog", "Serilog\Core.Serilog.csproj", "{82B06945-0B9D-4F0E-A199-92F6CC6C1185}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Serilog", "Serilog\Core.Serilog.csproj", "{82B06945-0B9D-4F0E-A199-92F6CC6C1185}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.MediatR", "MediatR\Core.MediatR.csproj", "{3A494010-C1A1-43F1-9DE5-58037637E8F3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Abstractions", "..\Common\Abstractions\Common.Abstractions.csproj", "{6C4276B5-5C37-41D4-99BD-A2220CA96C56}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.EventIds", "..\Common\EventIds\Common.EventIds.csproj", "{12E11F2F-F122-41EA-9153-E857CC60B2B4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Claims", "..\Common\Claims\Common.Claims.csproj", "{EE5D6429-88DA-420B-BB88-8F6F9309FB3B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +76,22 @@ Global
 		{82B06945-0B9D-4F0E-A199-92F6CC6C1185}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82B06945-0B9D-4F0E-A199-92F6CC6C1185}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82B06945-0B9D-4F0E-A199-92F6CC6C1185}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A494010-C1A1-43F1-9DE5-58037637E8F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A494010-C1A1-43F1-9DE5-58037637E8F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A494010-C1A1-43F1-9DE5-58037637E8F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A494010-C1A1-43F1-9DE5-58037637E8F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C4276B5-5C37-41D4-99BD-A2220CA96C56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C4276B5-5C37-41D4-99BD-A2220CA96C56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C4276B5-5C37-41D4-99BD-A2220CA96C56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C4276B5-5C37-41D4-99BD-A2220CA96C56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12E11F2F-F122-41EA-9153-E857CC60B2B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12E11F2F-F122-41EA-9153-E857CC60B2B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12E11F2F-F122-41EA-9153-E857CC60B2B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12E11F2F-F122-41EA-9153-E857CC60B2B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE5D6429-88DA-420B-BB88-8F6F9309FB3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE5D6429-88DA-420B-BB88-8F6F9309FB3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE5D6429-88DA-420B-BB88-8F6F9309FB3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE5D6429-88DA-420B-BB88-8F6F9309FB3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

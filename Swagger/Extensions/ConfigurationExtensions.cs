@@ -1,10 +1,11 @@
-﻿namespace Core.Extensions
+﻿namespace Microsoft.Extensions.Configuration
 {
     using System;
     using Core;
-    using Microsoft.Extensions.Configuration;
+    using JetBrains.Annotations;
 
     /// <summary>A class with methods that extend <see cref="IConfiguration"/>.</summary>
+    [PublicAPI]
     public static class ConfigurationExtensions
     {
         /// <summary>Gets the <see cref="SwaggerOptions"/> configuration section.</summary>

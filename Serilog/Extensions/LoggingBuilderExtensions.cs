@@ -1,23 +1,34 @@
-﻿namespace Core.Extensions
+﻿namespace Microsoft.Extensions.Logging
 {
     using System;
+    using Configuration;
+    using Core;
+    using DependencyInjection;
     using JetBrains.Annotations;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Options;
+    using Options;
     using Serilog;
     using Serilog.Events;
     using static System.Reflection.Assembly;
     using static System.StringComparison;
-    using static Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration;
-    using static Microsoft.Extensions.Logging.LogLevel;
+    using static ApplicationInsights.Extensibility.TelemetryConfiguration;
+    using static LogLevel;
     using static Serilog.Events.LogEventLevel;
     using static Serilog.TelemetryConverter;
 
+    /// <summary>A class with methods that extend <see cref="ILoggingBuilder"/>.</summary>
     [PublicAPI]
     public static class LoggingBuilderExtensions
     {
+        /// <summary>Adds Serilog using the provided <see cref="IConfiguration"/> and <see cref="IConfigurationSection"/> to build a <see cref="SerilogOptions"/> instance.</summary>
+        /// <param name="builder">The builder.</param>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="config">The config.</param>
+        /// <returns>The <paramref name="builder"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="builder"/> is <see langword="null" />
+        /// or
+        /// <paramref name="configuration"/> is <see langword="null" />
+        /// or
+        /// <paramref name="config"/> is <see langword="null" />.</exception>
         public static ILoggingBuilder AddSerilog(
             this ILoggingBuilder builder,
             IConfiguration configuration,
@@ -42,6 +53,16 @@
             return AddSerilog(builder, configuration, config.Get<SerilogOptions>());
         }
 
+        /// <summary>Adds Serilog using the provided <see cref="IConfiguration"/> and <see cref="Action{T}"/> to build a <see cref="SerilogOptions"/> instance.</summary>
+        /// <param name="builder">The builder.</param>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="configureOptions">The configure options delegate.</param>
+        /// <returns>The <paramref name="builder"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="builder"/> is <see langword="null" />
+        /// or
+        /// <paramref name="configuration"/> is <see langword="null" />
+        /// or
+        /// <paramref name="configureOptions"/> is <see langword="null" />.</exception>
         public static ILoggingBuilder AddSerilog(
             this ILoggingBuilder builder,
             IConfiguration configuration,
@@ -70,6 +91,19 @@
             }
         }
 
+        /// <summary>Adds Serilog using the provided <see cref="IConfiguration"/>, <see cref="IConfigurationSection"/>, and <see cref="Action{T}"/> to build a <see cref="SerilogOptions"/> instance.</summary>
+        /// <param name="builder">The builder.</param>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="config">The config.</param>
+        /// <param name="configureBinder">The configure binder delegate.</param>
+        /// <returns>The <paramref name="builder"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="builder"/> is <see langword="null" />
+        /// or
+        /// <paramref name="configuration"/> is <see langword="null" />
+        /// or
+        /// <paramref name="config"/> is <see langword="null" />
+        /// or
+        /// <paramref name="configureBinder"/> is <see langword="null" />.</exception>
         public static ILoggingBuilder AddSerilog(
             this ILoggingBuilder builder,
             IConfiguration configuration,
@@ -104,6 +138,20 @@
             }
         }
 
+        /// <summary>
+        /// <para>Adds Serilog using the provided <see cref="IConfiguration"/>.</para>
+        /// <para>
+        /// This method will build a <see cref="LoggerFilterOptions"/> instance using the default "Logging" section.
+        /// To use a <see cref="SerilogOptions"/> section instead, use one of the other overloads.
+        /// </para>
+        /// </summary>
+        /// <param name="builder">The builder.</param>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="azureBlobConnectionString">The Azure BLOB connection string.</param>
+        /// <returns>The <paramref name="builder"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="builder"/> is <see langword="null" />
+        /// or
+        /// <paramref name="configuration"/> is <see langword="null" />.</exception>
         public static ILoggingBuilder AddSerilog(
             this ILoggingBuilder builder,
             IConfiguration configuration,
@@ -183,14 +231,9 @@
                     continue;
                 }
 
-                var category = section.Key;
-                if (category.Equals(defaultCategory, OrdinalIgnoreCase))
-                {
-                    category = null;
-                }
-
-                var newRule = new LoggerFilterRule(logger, category, level, null);
-                options.Rules.Add(newRule);
+                options.Rules.Add(section.Key.Equals(defaultCategory, OrdinalIgnoreCase)
+                    ? new LoggerFilterRule(logger, null, level, null)
+                    : new LoggerFilterRule(logger, section.Key, level, null));
             }
         }
 
@@ -272,7 +315,11 @@
 
                 if (string.Equals("ApplicationInsights", rule.ProviderName, OrdinalIgnoreCase))
                 {
-                    config.WriteTo.ApplicationInsights(Active, Events, categoryLevel ?? Verbose);
+                    using (var telemetryConfiguration = CreateDefault())
+                    {
+                        config.WriteTo.ApplicationInsights(telemetryConfiguration, Events, categoryLevel ?? Verbose);
+                    }
+
                     continue;
                 }
 

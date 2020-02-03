@@ -1,24 +1,30 @@
 ﻿namespace Core.OperationFilters
 {
-    using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
     using JetBrains.Annotations;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.OpenApi.Models;
     using Swashbuckle.AspNetCore.SwaggerGen;
     using static System.Net.HttpStatusCode;
     using static System.String;
     using static Microsoft.OpenApi.Models.ReferenceType;
 
-    /// <inheritdoc />
+    /// <summary>Adds a 401 and 403 <see cref="ProducesResponseTypeAttribute"/> to protected endpoints.</summary>
     [UsedImplicitly]
+    [SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "Used implicitly")]
     internal class SecurityRequirementsOperationFilter : IOperationFilter
     {
         private readonly string _scheme;
 
-        public SecurityRequirementsOperationFilter(string scheme = "Bearer")
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityRequirementsOperationFilter"/> class.
+        /// </summary>
+        /// <param name="scheme">The default authentication scheme.</param>
+        internal SecurityRequirementsOperationFilter(string scheme = "Bearer")
         {
             _scheme = scheme;
         }
@@ -26,16 +32,6 @@
         /// <inheritdoc />
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
-            if (operation == default)
-            {
-                throw new ArgumentNullException(nameof(operation));
-            }
-
-            if (context == default)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
             var controllerAttributes = new List<AuthorizeAttribute>();
             if (context.MethodInfo.DeclaringType != null)
             {
@@ -60,7 +56,7 @@
                 .Where(x => !IsNullOrWhiteSpace(x))
                 .Distinct()
                 .ToArray();
-            operation.Responses ??= new OpenApiResponses();
+            operation.Responses = operation.Responses ?? new OpenApiResponses();
             var key = $"{(int)Unauthorized}";
             if (!operation.Responses.ContainsKey(key))
             {
@@ -79,7 +75,7 @@
                 });
             }
 
-            operation.Security ??= new List<OpenApiSecurityRequirement>();
+            operation.Security = operation.Security ?? new List<OpenApiSecurityRequirement>();
             var scheme = new OpenApiSecurityScheme
             {
                 Reference = new OpenApiReference

@@ -4,36 +4,56 @@
     using JetBrains.Annotations;
     using Serilog.Events;
 
+    /// <summary>Configuration settings for Serilog.</summary>
     [PublicAPI]
     public class SerilogOptions
     {
+        /// <summary>Gets or sets a value indicating whether to use scopes.</summary>
+        /// <value>
+        ///   <c>true</c> if set to use scopes; otherwise, <c>false</c>.</value>
         public bool Dispose { get; set; }
 
         /// <summary>
-        /// <para>Gets or sets the level switches.</para>
+        /// <para>Gets the level switches.</para>
         /// <para>Level switch must be declared with a '$' sign, like "LevelSwitches" : {"$switchName" : "InitialLevel"}.</para>
         /// </summary>
         /// <value>The level switches.</value>
-        public IDictionary<string, LogEventLevel> LevelSwitches { get; set; } = new Dictionary<string, LogEventLevel>();
+        public IDictionary<string, LogEventLevel> LevelSwitches { get; } = new Dictionary<string, LogEventLevel>();
 
-        public MinimumLevel MinimumLevel { get; set; }
+        /// <summary>Gets or sets the minimum level.</summary>
+        /// <value>The minimum level.</value>
+        public MinimumLevel MinimumLevel { get; set; } = new MinimumLevel();
 
-        public IList<NamedArguments> Enrich { get; set; } = new List<NamedArguments>();
+        /// <summary>Gets the enrichers.</summary>
+        /// <value>The enrichers.</value>
+        public IList<NamedArguments> Enrich { get; } = new List<NamedArguments>();
 
-        /// <summary>Gets or sets the assembly names to use.</summary>
+        /// <summary>Gets the assembly names to use.</summary>
         /// <value>The assembly names to use.</value>
-        public IList<string> Using { get; set; } = new List<string>();
+        public IList<string> Using { get; } = new List<string>();
 
-        public IDictionary<string, object> Properties { get; set; } = new Dictionary<string, object>();
+        /// <summary>Gets the properties.</summary>
+        /// <value>The properties.</value>
+        public IDictionary<string, object> Properties { get; } = new Dictionary<string, object>();
 
-        public IList<NamedArguments> Filter { get; set; } = new List<NamedArguments>();
+        /// <summary>Gets the filters.</summary>
+        /// <value>The filters.</value>
+        public IList<NamedArguments> Filter { get; } = new List<NamedArguments>();
 
-        public IList<NamedArguments> Destructure { get; set; } = new List<NamedArguments>();
+        /// <summary>Gets the destructurers.</summary>
+        /// <value>The destructurers.</value>
+        public IList<NamedArguments> Destructure { get; } = new List<NamedArguments>();
 
-        public IList<NamedArguments> WriteTo { get; set; } = new List<NamedArguments>();
+        /// <summary>Gets the writers.</summary>
+        /// <value>The writers.</value>
+        public IList<NamedArguments> WriteTo { get; } = new List<NamedArguments>();
 
-        public IList<NamedArguments> AuditTo { get; set; } = new List<NamedArguments>();
+        /// <summary>Gets the auditers.</summary>
+        /// <value>The auditers.</value>
+        public IList<NamedArguments> AuditTo { get; } = new List<NamedArguments>();
 
+        /// <summary>Gets or sets the Elasticsearch options.</summary>
+        /// <value>The Elasticsearch options.</value>
         public ElasticsearchOptions ElasticsearchOptions { get; set; }
     }
 }

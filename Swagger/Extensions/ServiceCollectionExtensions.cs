@@ -1,11 +1,11 @@
-﻿namespace Core.Extensions
+﻿namespace Microsoft.Extensions.DependencyInjection
 {
     using System;
+    using Configuration;
+    using Core;
+    using Core.Options;
     using JetBrains.Annotations;
     using Microsoft.AspNet.OData.Extensions;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Options;
     using Options;
     using Swashbuckle.AspNetCore.SwaggerGen;
     using Swashbuckle.AspNetCore.SwaggerUI;

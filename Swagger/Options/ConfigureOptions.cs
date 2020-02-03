@@ -1,6 +1,7 @@
 ﻿namespace Core.Options
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Text;
     using JetBrains.Annotations;
     using Microsoft.AspNetCore.Builder;
@@ -13,13 +14,21 @@
     using Swashbuckle.AspNetCore.SwaggerUI;
     using static System.String;
 
+    /// <summary>Configuration settings for the <see cref="SwaggerGenOptions"/> and <see cref="SwaggerUIOptions"/> classes.</summary>
     [UsedImplicitly]
+    [SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "Used implicitly")]
     internal class ConfigureOptions : IConfigureOptions<SwaggerGenOptions>, IConfigureOptions<SwaggerUIOptions>
     {
         private readonly IApiVersionDescriptionProvider _apiVersionDescriptionProvider;
         private readonly SwaggerOptions _options;
 
-        public ConfigureOptions(
+        /// <summary>Initializes a new instance of the <see cref="ConfigureOptions"/> class.</summary>
+        /// <param name="apiVersionDescriptionProvider">The API version description provider.</param>
+        /// <param name="options">The options.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="apiVersionDescriptionProvider"/> is <see langword="null" />
+        /// or
+        /// <paramref name="options"/> is <see langword="null" />.</exception>
+        internal ConfigureOptions(
             IApiVersionDescriptionProvider apiVersionDescriptionProvider,
             IOptions<SwaggerOptions> options)
         {
@@ -27,9 +36,10 @@
             _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
         }
 
+        /// <inheritdoc />
         public void Configure(SwaggerGenOptions options)
         {
-            _options.Info ??= new OpenApiInfo();
+            _options.Info = _options.Info ?? new OpenApiInfo();
             foreach (var apiVersionDescription in _apiVersionDescriptionProvider.ApiVersionDescriptions)
             {
                 _options.Info.Version = $"{apiVersionDescription.ApiVersion}";
@@ -64,13 +74,9 @@
             options.EnableAnnotations();
         }
 
+        /// <inheritdoc />
         public void Configure(SwaggerUIOptions options)
         {
-            if (options == default)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
             foreach (var apiVersionDescription in _apiVersionDescriptionProvider.ApiVersionDescriptions)
             {
                 var name = apiVersionDescription.GroupName;

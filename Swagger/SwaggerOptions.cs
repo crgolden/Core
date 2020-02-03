@@ -15,11 +15,11 @@
     {
         /// <summary>Gets or sets the route prefix.</summary>
         /// <value>The route prefix.</value>
-        public string? RoutePrefix { get; set; }
+        public string RoutePrefix { get; set; }
 
         /// <summary>Gets or sets the XML comments file path.</summary>
         /// <value>The XML comments file path.</value>
-        public string? XmlCommentsFilePath { get; set; }
+        public string XmlCommentsFilePath { get; set; }
 
         /// <summary>Gets or sets the <see cref="OpenApiInfo"/>.</summary>
         /// <value>The <see cref="OpenApiInfo"/>.</value>
@@ -35,7 +35,7 @@
 
         /// <summary>Gets or sets the default authentication scheme.</summary>
         /// <value>The default authentication scheme.</value>
-        public string? DefaultScheme { get; set; } = "Bearer";
+        public string DefaultScheme { get; set; } = "Bearer";
 
         /// <summary>Gets or sets the <see cref="OpenApiSecurityScheme"/>.</summary>
         /// <value>The <see cref="OpenApiSecurityScheme"/>.</value>

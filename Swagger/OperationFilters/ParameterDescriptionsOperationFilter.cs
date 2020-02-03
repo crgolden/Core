@@ -1,6 +1,6 @@
 ﻿namespace Core.OperationFilters
 {
-    using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using JetBrains.Annotations;
     using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -9,29 +9,26 @@
     using Swashbuckle.AspNetCore.SwaggerGen;
     using static System.String;
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Represents the Swagger/Swashbuckle operation filter used to document the implicit API version parameter.
+    /// </summary>
+    /// <remarks>This <see cref="IOperationFilter"/> is only required due to bugs in the <see cref="SwaggerGenerator"/>.
+    /// Once they are fixed and published, this class can be removed.</remarks>
     [UsedImplicitly]
+    [SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "Used implicitly")]
     internal class ParameterDescriptionsOperationFilter : IOperationFilter
     {
         /// <inheritdoc />
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
-            if (operation == default)
-            {
-                throw new ArgumentNullException(nameof(operation));
-            }
-
-            if (context == default)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
             operation.Deprecated |= context.ApiDescription.IsDeprecated();
             if (operation.Parameters == null)
             {
                 return;
             }
 
+            // REF: https://github.com/domaindrivendev/Swashbuckle.AspNetCore/issues/412
+            // REF: https://github.com/domaindrivendev/Swashbuckle.AspNetCore/pull/413
             foreach (var parameter in operation.Parameters)
             {
                 var description = context.ApiDescription.ParameterDescriptions.First(p => p.Name == parameter.Name);
