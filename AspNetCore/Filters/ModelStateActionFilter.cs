@@ -2,14 +2,16 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using JetBrains.Annotations;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
 
     /// <inheritdoc />
+    [PublicAPI]
     public class ModelStateActionFilter : IActionFilter
     {
         /// <inheritdoc />
-        public void OnActionExecuting(ActionExecutingContext? context)
+        public void OnActionExecuting(ActionExecutingContext context)
         {
             if (context == default)
             {

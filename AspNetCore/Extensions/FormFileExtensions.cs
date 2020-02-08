@@ -21,8 +21,13 @@
             }
 
             var imageExtensions = new[] { ".jpg", ".png", ".gif", ".jpeg" };
-            return file.ContentType.Contains("image", OrdinalIgnoreCase) ||
+#if NETCOREAPP3_0
+            return file.ContentType.Contains("image", InvariantCultureIgnoreCase) ||
                    imageExtensions.Any(x => file.FileName?.EndsWith(x, OrdinalIgnoreCase) == true);
+#else
+            return file.ContentType.Contains("image") ||
+                   imageExtensions.Any(x => file.FileName?.EndsWith(x, OrdinalIgnoreCase) == true);
+#endif
         }
     }
 }

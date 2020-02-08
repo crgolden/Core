@@ -2,10 +2,12 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using JetBrains.Annotations;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
 
     /// <inheritdoc />
+    [PublicAPI]
     public class ModelStatePageFilter : IPageFilter
     {
         /// <inheritdoc />
@@ -15,7 +17,7 @@
         }
 
         /// <inheritdoc />
-        public void OnPageHandlerExecuting(PageHandlerExecutingContext? context)
+        public void OnPageHandlerExecuting(PageHandlerExecutingContext context)
         {
             if (context == default)
             {

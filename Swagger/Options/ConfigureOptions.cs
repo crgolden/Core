@@ -1,7 +1,6 @@
 ﻿namespace Core.Options
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
     using System.Text;
     using JetBrains.Annotations;
     using Microsoft.AspNetCore.Builder;
@@ -14,10 +13,9 @@
     using Swashbuckle.AspNetCore.SwaggerUI;
     using static System.String;
 
-    /// <summary>Configuration settings for the <see cref="SwaggerGenOptions"/> and <see cref="SwaggerUIOptions"/> classes.</summary>
-    [UsedImplicitly]
-    [SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "Used implicitly")]
-    internal class ConfigureOptions : IConfigureOptions<SwaggerGenOptions>, IConfigureOptions<SwaggerUIOptions>
+    /// <inheritdoc cref="IConfigureOptions{TOptions}" />
+    [PublicAPI]
+    public class ConfigureOptions : IConfigureOptions<SwaggerGenOptions>, IConfigureOptions<SwaggerUIOptions>
     {
         private readonly IApiVersionDescriptionProvider _apiVersionDescriptionProvider;
         private readonly SwaggerOptions _options;
@@ -28,7 +26,7 @@
         /// <exception cref="ArgumentNullException"><paramref name="apiVersionDescriptionProvider"/> is <see langword="null" />
         /// or
         /// <paramref name="options"/> is <see langword="null" />.</exception>
-        internal ConfigureOptions(
+        public ConfigureOptions(
             IApiVersionDescriptionProvider apiVersionDescriptionProvider,
             IOptions<SwaggerOptions> options)
         {
@@ -59,10 +57,10 @@
                 options.SwaggerDoc(apiVersionDescription.GroupName, _options.Info);
             }
 
-            if (!IsNullOrWhiteSpace(_options.DefaultScheme))
+            if (_options.SecurityScheme != default)
             {
-                options.AddSecurityDefinition(_options.DefaultScheme, _options.SecurityScheme);
-                options.OperationFilter<SecurityRequirementsOperationFilter>(_options.DefaultScheme);
+                options.AddSecurityDefinition(_options.SecurityScheme.Name, _options.SecurityScheme);
+                options.OperationFilter<SecurityRequirementsOperationFilter>(_options.SecurityScheme);
             }
 
             if (!IsNullOrWhiteSpace(_options.XmlCommentsFilePath))
@@ -77,6 +75,11 @@
         /// <inheritdoc />
         public void Configure(SwaggerUIOptions options)
         {
+            if (options == default)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             foreach (var apiVersionDescription in _apiVersionDescriptionProvider.ApiVersionDescriptions)
             {
                 var name = apiVersionDescription.GroupName;
@@ -102,6 +105,10 @@
             }
 
             options.DocumentTitle = sb.ToString();
+            if (_options.OAuthConfig != default)
+            {
+                options.OAuthConfigObject = _options.OAuthConfig;
+            }
         }
     }
 }

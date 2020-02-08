@@ -24,9 +24,7 @@
         public void TransformOutboundThrowsForNullValue()
         {
             // Arrange
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-            static string TestCode() => new SlugifyParameterTransformer().TransformOutbound(default);
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+            string TestCode() => new SlugifyParameterTransformer().TransformOutbound(default);
 
             // Act
             var exception = Assert.Throws<ArgumentNullException>(TestCode);

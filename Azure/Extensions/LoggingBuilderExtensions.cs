@@ -10,7 +10,7 @@
         /// <summary>Adds the azure logging.</summary>
         /// <param name="loggingBuilder">The logging builder.</param>
         /// <returns>The <paramref name="loggingBuilder"/>.</returns>
-        /// <exception cref="System.ArgumentNullException"><paramref name="loggingBuilder"/> is <see langword="null" />.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="loggingBuilder"/> is <see langword="null" />.</exception>
         public static ILoggingBuilder AddAzureLogging(this ILoggingBuilder loggingBuilder)
         {
             if (loggingBuilder == default)

@@ -57,7 +57,7 @@
                 return Handle();
             }
 
-            using (request.Scope())
+            using (request.Scope)
             {
                 return Handle();
             }
@@ -91,7 +91,7 @@
                 return Handle();
             }
 
-            using (request.Scope())
+            using (request.Scope)
             {
                 return Handle();
             }
@@ -125,7 +125,7 @@
                 return Handle();
             }
 
-            using (request.Scope())
+            using (request.Scope)
             {
                 return Handle();
             }
@@ -159,7 +159,7 @@
                 return Handle();
             }
 
-            using (request.Scope())
+            using (request.Scope)
             {
                 return Handle();
             }
@@ -193,7 +193,7 @@
                 return Handle();
             }
 
-            using (request.Scope())
+            using (request.Scope)
             {
                 return Handle();
             }
@@ -227,7 +227,7 @@
                 return Handle();
             }
 
-            using (request.Scope())
+            using (request.Scope)
             {
                 return Handle();
             }
@@ -261,7 +261,7 @@
                 return Handle();
             }
 
-            using (request.Scope())
+            using (request.Scope)
             {
                 return Handle();
             }
@@ -295,7 +295,7 @@
                 return Handle();
             }
 
-            using (request.Scope())
+            using (request.Scope)
             {
                 return Handle();
             }

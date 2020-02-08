@@ -14,9 +14,9 @@
     /// </summary>
     /// <remarks>This <see cref="IOperationFilter"/> is only required due to bugs in the <see cref="SwaggerGenerator"/>.
     /// Once they are fixed and published, this class can be removed.</remarks>
-    [UsedImplicitly]
+    [PublicAPI]
     [SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "Used implicitly")]
-    internal class ParameterDescriptionsOperationFilter : IOperationFilter
+    public class ParameterDescriptionsOperationFilter : IOperationFilter
     {
         /// <inheritdoc />
         public void Apply(OpenApiOperation operation, OperationFilterContext context)

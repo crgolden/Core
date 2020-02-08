@@ -33,18 +33,19 @@
             }
         };
 
-        /// <summary>Gets or sets the default authentication scheme.</summary>
-        /// <value>The default authentication scheme.</value>
-        public string DefaultScheme { get; set; } = "Bearer";
-
         /// <summary>Gets or sets the <see cref="OpenApiSecurityScheme"/>.</summary>
         /// <value>The <see cref="OpenApiSecurityScheme"/>.</value>
         public OpenApiSecurityScheme SecurityScheme { get; set; } = new OpenApiSecurityScheme
         {
             Name = "Authorization",
             In = Header,
-            Type = ApiKey
+            Type = OAuth2,
+            Scheme = "Bearer"
         };
+
+        /// <summary>Gets or sets the OAuth configuration.</summary>
+        /// <value>The OAuth configuration.</value>
+        public OAuthConfigObject OAuthConfig { get; set; }
 
         /// <summary>Gets or sets a value indicating whether to use OData.</summary>
         /// <value>The use OData flag.</value>

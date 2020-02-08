@@ -2,10 +2,12 @@
 {
     using System;
     using System.Text.RegularExpressions;
+    using JetBrains.Annotations;
     using Microsoft.AspNetCore.Routing;
     using static System.Globalization.CultureInfo;
 
     /// <inheritdoc />
+    [PublicAPI]
     public class SlugifyParameterTransformer : IOutboundParameterTransformer
     {
         /// <inheritdoc />

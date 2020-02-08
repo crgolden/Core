@@ -23,6 +23,6 @@
         public ILogger Logger { get; }
 
         /// <inheritdoc />
-        public IDisposable Scope() => ScopeFunction(Logger, NewGuid());
+        public IDisposable Scope => ScopeFunction(Logger, NewGuid());
     }
 }
