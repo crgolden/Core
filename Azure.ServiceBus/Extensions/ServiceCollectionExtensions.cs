@@ -114,9 +114,9 @@
         private static IServiceCollection AddQueueClient(this IServiceCollection services, ServiceBusOptions options)
         {
             services.AddSingleton(new QueueClient(options.ConnectionStringBuilder));
+            services.AddSingleton<IClientEntity>(sp => sp.GetRequiredService<QueueClient>());
             services.AddSingleton<IQueueClient>(sp => sp.GetRequiredService<QueueClient>());
             services.AddSingleton<IReceiverClient>(sp => sp.GetRequiredService<QueueClient>());
-            services.AddSingleton<IClientEntity>(sp => sp.GetRequiredService<QueueClient>());
             services.AddSingleton<ISenderClient>(sp => sp.GetRequiredService<QueueClient>());
             return services;
         }

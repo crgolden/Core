@@ -13,6 +13,7 @@
         /// <summary>Handles the remote failure.</summary>
         /// <param name="context">The context.</param>
         /// <returns>A task.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="context"/> is <see langword="null"/>.</exception>
         public static Task HandleRemoteFailure(this RemoteFailureContext context)
         {
             if (context == default)

@@ -33,6 +33,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Common.Abstractions" Version="1.0.0-beta8" />
+    <PackageReference Include="Common.EventIds" Version="1.0.0-beta1" />
     <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
@@ -53,11 +55,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Common\Abstractions\Common.Abstractions.csproj" />
-    <ProjectReference Include="..\..\Common\EventIds\Common.EventIds.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,7 +3,6 @@
     using System;
     using Configuration;
     using Core;
-    using Core.Options;
     using JetBrains.Annotations;
     using Microsoft.AspNet.OData.Extensions;
     using Options;
@@ -14,7 +13,7 @@
     [PublicAPI]
     public static class ServiceCollectionExtensions
     {
-        /// <summary>Adds <see cref="SwaggerOptions"/> and <see cref="ConfigureOptions"/> instances to <paramref name="services"/>.</summary>
+        /// <summary>Adds <see cref="SwaggerOptions"/> and <see cref="ConfigureSwaggerOptions"/> instances to <paramref name="services"/>.</summary>
         /// <param name="services">The <see cref="IServiceCollection"/> instance.</param>
         /// <param name="configureOptions">The action to perform on the bound <see cref="SwaggerOptions"/>.</param>
         /// <returns>The <paramref name="services"/>.</returns>
@@ -36,7 +35,7 @@
             return services.Configure(configureOptions).AddSwagger();
         }
 
-        /// <summary>Adds <see cref="SwaggerOptions"/> and <see cref="ConfigureOptions"/> instances to <paramref name="services"/>.</summary>
+        /// <summary>Adds <see cref="SwaggerOptions"/> and <see cref="ConfigureSwaggerOptions"/> instances to <paramref name="services"/>.</summary>
         /// <param name="services">The <see cref="IServiceCollection"/> instance.</param>
         /// <param name="config">The <see cref="IConfigurationSection"/> of the <see cref="SwaggerOptions"/> instance.</param>
         /// <returns>The <paramref name="services"/>.</returns>
@@ -58,7 +57,7 @@
             return services.Configure<SwaggerOptions>(config).AddSwagger();
         }
 
-        /// <summary>Adds <see cref="SwaggerOptions"/> and <see cref="ConfigureOptions"/> instances to <paramref name="services"/>.</summary>
+        /// <summary>Adds <see cref="SwaggerOptions"/> and <see cref="ConfigureSwaggerOptions"/> instances to <paramref name="services"/>.</summary>
         /// <param name="services">The <see cref="IServiceCollection"/> instance.</param>
         /// <param name="config">The <see cref="IConfigurationSection"/> of the <see cref="SwaggerOptions"/> instance.</param>
         /// <param name="configureBinder">The action to perform on the <see cref="BinderOptions"/> of the <see cref="ConfigurationBinder"/>.</param>
@@ -95,8 +94,8 @@
                 options = provider.GetRequiredService<IOptions<SwaggerOptions>>().Value;
             }
 
-            services.AddSingleton<IConfigureOptions<SwaggerGenOptions>, ConfigureOptions>();
-            services.AddSingleton<IConfigureOptions<SwaggerUIOptions>, ConfigureOptions>();
+            services.AddSingleton<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+            services.AddSingleton<IConfigureOptions<SwaggerUIOptions>, ConfigureSwaggerOptions>();
             services.AddApiVersioning(opt =>
             {
                 opt.AssumeDefaultVersionWhenUnspecified = options.AssumeDefaultVersionWhenUnspecified;

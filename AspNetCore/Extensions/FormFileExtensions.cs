@@ -11,7 +11,7 @@
     {
         /// <summary>Determines whether <paramref name="file"/> is an image.</summary>
         /// <param name="file">The file.</param>
-        /// <returns><c>true</c> if the specified file is an image; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true" /> if the specified file is an image; otherwise, <see langword="false" />.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="file"/> is <see langword="null" />.</exception>
         public static bool IsImage(this IFormFile file)
         {

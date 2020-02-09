@@ -14,20 +14,21 @@
     {
         /// <summary>Adds the Azure Key Vault.</summary>
         /// <param name="configBuilder">The configuration builder.</param>
+        /// <param name="keyVaultName">The key vault name.</param>
         /// <returns>The <paramref name="configBuilder"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="configBuilder"/> is <see langword="null" />.</exception>
-        public static IConfigurationBuilder AddAzureKeyVault(this IConfigurationBuilder configBuilder)
+        /// <exception cref="ArgumentNullException"><paramref name="configBuilder"/> is <see langword="null" />
+        /// or
+        /// <paramref name="keyVaultName"/> is <see langword="null" />.</exception>
+        public static IConfigurationBuilder AddAzureKeyVault(this IConfigurationBuilder configBuilder, string keyVaultName)
         {
             if (configBuilder == default)
             {
                 throw new ArgumentNullException(nameof(configBuilder));
             }
 
-            var configRoot = configBuilder.Build();
-            var keyVaultName = configRoot.GetValue<string>("KeyVaultName");
             if (IsNullOrWhiteSpace(keyVaultName))
             {
-                return configBuilder;
+                throw new ArgumentNullException(nameof(keyVaultName));
             }
 
             var azureServiceTokenProvider = new AzureServiceTokenProvider();
@@ -36,10 +37,8 @@
             var manager = new DefaultKeyVaultSecretManager();
             using (var keyVaultClient = new KeyVaultClient(authenticationCallback))
             {
-                configBuilder.AddAzureKeyVault(vault, keyVaultClient, manager);
+                return configBuilder.AddAzureKeyVault(vault, keyVaultClient, manager);
             }
-
-            return configBuilder;
         }
     }
 }

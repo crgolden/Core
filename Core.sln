@@ -32,15 +32,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Serilog", "Serilog\Cor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.MediatR", "MediatR\Core.MediatR.csproj", "{3A494010-C1A1-43F1-9DE5-58037637E8F3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Abstractions", "..\Common\Abstractions\Common.Abstractions.csproj", "{6C4276B5-5C37-41D4-99BD-A2220CA96C56}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.EventIds", "..\Common\EventIds\Common.EventIds.csproj", "{12E11F2F-F122-41EA-9153-E857CC60B2B4}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Claims", "..\Common\Claims\Common.Claims.csproj", "{EE5D6429-88DA-420B-BB88-8F6F9309FB3B}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.IdentityServer", "IdentityServer\Core.IdentityServer.csproj", "{AFCEC69A-3BDA-438A-A6BB-A45282A4829C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Azure.ServiceBus", "Azure.ServiceBus\Core.Azure.ServiceBus.csproj", "{4635C1D9-8411-4B59-B25C-99EDFFD75384}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Azure.ServiceBus", "Azure.ServiceBus\Core.Azure.ServiceBus.csproj", "{4635C1D9-8411-4B59-B25C-99EDFFD75384}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -84,18 +78,6 @@ Global
 		{3A494010-C1A1-43F1-9DE5-58037637E8F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A494010-C1A1-43F1-9DE5-58037637E8F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A494010-C1A1-43F1-9DE5-58037637E8F3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6C4276B5-5C37-41D4-99BD-A2220CA96C56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6C4276B5-5C37-41D4-99BD-A2220CA96C56}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6C4276B5-5C37-41D4-99BD-A2220CA96C56}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6C4276B5-5C37-41D4-99BD-A2220CA96C56}.Release|Any CPU.Build.0 = Release|Any CPU
-		{12E11F2F-F122-41EA-9153-E857CC60B2B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{12E11F2F-F122-41EA-9153-E857CC60B2B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{12E11F2F-F122-41EA-9153-E857CC60B2B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{12E11F2F-F122-41EA-9153-E857CC60B2B4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EE5D6429-88DA-420B-BB88-8F6F9309FB3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE5D6429-88DA-420B-BB88-8F6F9309FB3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE5D6429-88DA-420B-BB88-8F6F9309FB3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE5D6429-88DA-420B-BB88-8F6F9309FB3B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AFCEC69A-3BDA-438A-A6BB-A45282A4829C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AFCEC69A-3BDA-438A-A6BB-A45282A4829C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFCEC69A-3BDA-438A-A6BB-A45282A4829C}.Release|Any CPU.ActiveCfg = Release|Any CPU

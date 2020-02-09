@@ -7,7 +7,7 @@
     [PublicAPI]
     public static class LoggingBuilderExtensions
     {
-        /// <summary>Adds the azure logging.</summary>
+        /// <summary>Adds Azure logging.</summary>
         /// <param name="loggingBuilder">The logging builder.</param>
         /// <returns>The <paramref name="loggingBuilder"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="loggingBuilder"/> is <see langword="null" />.</exception>
@@ -18,8 +18,7 @@
                 throw new ArgumentNullException(nameof(loggingBuilder));
             }
 
-            loggingBuilder.AddAzureWebAppDiagnostics();
-            return loggingBuilder;
+            return loggingBuilder.AddAzureWebAppDiagnostics();
         }
     }
 }

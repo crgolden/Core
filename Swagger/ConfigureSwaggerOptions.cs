@@ -1,4 +1,4 @@
-﻿namespace Core.Options
+﻿namespace Core
 {
     using System;
     using System.Text;
@@ -15,18 +15,18 @@
 
     /// <inheritdoc cref="IConfigureOptions{TOptions}" />
     [PublicAPI]
-    public class ConfigureOptions : IConfigureOptions<SwaggerGenOptions>, IConfigureOptions<SwaggerUIOptions>
+    public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>, IConfigureOptions<SwaggerUIOptions>
     {
         private readonly IApiVersionDescriptionProvider _apiVersionDescriptionProvider;
         private readonly SwaggerOptions _options;
 
-        /// <summary>Initializes a new instance of the <see cref="ConfigureOptions"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="ConfigureSwaggerOptions"/> class.</summary>
         /// <param name="apiVersionDescriptionProvider">The API version description provider.</param>
         /// <param name="options">The options.</param>
         /// <exception cref="ArgumentNullException"><paramref name="apiVersionDescriptionProvider"/> is <see langword="null" />
         /// or
         /// <paramref name="options"/> is <see langword="null" />.</exception>
-        public ConfigureOptions(
+        public ConfigureSwaggerOptions(
             IApiVersionDescriptionProvider apiVersionDescriptionProvider,
             IOptions<SwaggerOptions> options)
         {

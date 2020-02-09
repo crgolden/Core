@@ -1,10 +1,10 @@
 ﻿namespace Core.ParameterTransformers
 {
     using System;
-    using System.Text.RegularExpressions;
     using JetBrains.Annotations;
     using Microsoft.AspNetCore.Routing;
     using static System.Globalization.CultureInfo;
+    using static System.Text.RegularExpressions.Regex;
 
     /// <inheritdoc />
     [PublicAPI]
@@ -18,7 +18,7 @@
                 throw new ArgumentNullException(nameof(value));
             }
 
-            return Regex.Replace($"{value}", "([a-z])([A-Z])", "$1-$2").ToLower(CurrentCulture);
+            return Replace($"{value}", "([a-z])([A-Z])", "$1-$2").ToLower(CurrentCulture);
         }
     }
 }
