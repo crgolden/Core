@@ -1,6 +1,7 @@
 ﻿namespace Microsoft.Extensions.Logging
 {
     using System;
+    using ApplicationInsights.Extensibility;
     using Configuration;
     using Core;
     using DependencyInjection;
@@ -168,7 +169,8 @@
             }
 
             var config = new LoggerConfiguration();
-            BuildFromRules(config, configuration, azureBlobConnectionString);
+
+            BuildFromRules(config, builder.Services, configuration, azureBlobConnectionString);
             var logger = config.CreateLogger();
             builder.AddSerilog(logger);
             return builder;
@@ -278,6 +280,7 @@
 
         private static void BuildFromRules(
             LoggerConfiguration config,
+            IServiceCollection services,
             IConfiguration configuration,
             string azureBlobConnectionString)
         {
@@ -315,9 +318,23 @@
 
                 if (string.Equals("ApplicationInsights", rule.ProviderName, OrdinalIgnoreCase))
                 {
-                    using (var telemetryConfiguration = CreateDefault())
+                    TelemetryConfiguration telemetryConfiguration;
+                    using (var provider = services.BuildServiceProvider(true))
+                    {
+                        var options = provider.GetService<IOptions<TelemetryConfiguration>>();
+                        telemetryConfiguration = options?.Value;
+                    }
+
+                    if (telemetryConfiguration != default)
                     {
                         config.WriteTo.ApplicationInsights(telemetryConfiguration, Events, categoryLevel ?? Verbose);
+                    }
+                    else
+                    {
+                        using (telemetryConfiguration = CreateDefault())
+                        {
+                            config.WriteTo.ApplicationInsights(telemetryConfiguration, Events, categoryLevel ?? Verbose);
+                        }
                     }
 
                     continue;

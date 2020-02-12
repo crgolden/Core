@@ -1,6 +1,7 @@
 ﻿namespace Microsoft.Extensions.DependencyInjection
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Security.Cryptography.X509Certificates;
     using AspNetCore.Authentication.Cookies;
     using AspNetCore.Authentication.Facebook;
@@ -16,6 +17,7 @@
     using JetBrains.Annotations;
     using Options;
     using static System.Convert;
+    using static System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler;
     using static System.Security.Cryptography.X509Certificates.X509KeyStorageFlags;
     using static System.String;
     using static AspNetCore.Http.SameSiteMode;
@@ -197,6 +199,7 @@
             }
         }
 
+        [SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Cannot dispose certs")]
         private static IServiceCollection AddIdentityServer(
             this IServiceCollection services,
             Core.IdentityServerOptions identityServerOptions,
@@ -209,6 +212,9 @@
             Action<IdentityServerAuthenticationOptions> identityServerAuthenticationOptionsAction,
             Action<FacebookOptions> facebookOptionsAction)
         {
+            DefaultInboundClaimTypeMap.Clear();
+            DefaultOutboundClaimTypeMap.Clear();
+
             var builder = new IdentityServerBuilder(services);
             identityServerOptionsAction = identityServerOptionsAction ?? (_ =>
             {
@@ -267,18 +273,16 @@
             {
                 if (!IsNullOrWhiteSpace(identityServerOptions.SigningCredential))
                 {
-                    using (var cert = new X509Certificate2(FromBase64String(identityServerOptions.SigningCredential), default(string), MachineKeySet))
-                    {
-                        builder.AddSigningCredential(cert);
-                    }
+                    var rawData = FromBase64String(identityServerOptions.SigningCredential);
+                    var cert = new X509Certificate2(rawData, default(string), MachineKeySet);
+                    builder.AddSigningCredential(cert);
                 }
 
                 if (!IsNullOrWhiteSpace(identityServerOptions.ValidationKey))
                 {
-                    using (var cert = new X509Certificate2(FromBase64String(identityServerOptions.ValidationKey), default(string), MachineKeySet))
-                    {
-                        builder.AddValidationKey(cert);
-                    }
+                    var rawData = FromBase64String(identityServerOptions.ValidationKey);
+                    var cert = new X509Certificate2(rawData, default(string), MachineKeySet);
+                    builder.AddValidationKey(cert);
                 }
 
                 builder.AddConfigurationStoreCache();
