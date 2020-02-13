@@ -6,6 +6,7 @@
     using Configuration;
     using Core;
     using Core.NotificationHandlers;
+    using Core.Notifications;
     using Core.PipelineBehaviors;
     using Core.RequestHandlers;
     using Core.Requests;
@@ -165,13 +166,13 @@
             }
 
             services.AddMediatR(new[] { GetExecutingAssembly() }, configureService);
-            if (options.UseLoggableNotificationHandler)
-            {
-                return services;
-            }
-
             var descriptor = services.Single(x => x.ImplementationType == Types.LoggableNotificationHandler);
             services.Remove(descriptor);
+            foreach (var modelType in modelTypes.Where(x => x.IsClass).Distinct())
+            {
+                services.SetupNotifications(modelType, options);
+            }
+
             return services;
         }
 
@@ -183,9 +184,18 @@
                 return services;
             }
 
+            var queryRequestHandler = Types.QueryRequestHandler.MakeGenericType(modelType);
+            var loggingBehavior = Types.LoggingPipelineBehavior.MakeGenericType(modelType);
+            if (options.UseQueryRequestHandler)
+            {
+                var queryType = Types.Queryable.MakeGenericType(modelType);
+                var queryRequest = Types.QueryRequest.MakeGenericType(modelType);
+                var requestHandler = Types.RequestHandler.MakeGenericType(queryRequest, queryType);
+                services.AddScoped(requestHandler, queryRequestHandler);
+            }
+
             var listType = Types.List.MakeGenericType(modelType);
             var getRangeRequest = Types.GetRangeRequest.MakeGenericType(modelType);
-            var queryRequestHandler = Types.QueryRequestHandler.MakeGenericType(modelType);
             if (options.UseQueryRequestHandler)
             {
                 var requestHandler = Types.RequestHandler.MakeGenericType(getRangeRequest, listType);
@@ -194,7 +204,6 @@
 
             if (options.UseLoggingPipelineBehavior)
             {
-                var loggingBehavior = Types.LoggingPipelineBehavior.MakeGenericType(modelType);
                 var behavior = Types.PipelineBehavior.MakeGenericType(getRangeRequest, listType);
                 services.AddScoped(behavior, loggingBehavior);
             }
@@ -208,7 +217,6 @@
 
             if (options.UseLoggingPipelineBehavior)
             {
-                var loggingBehavior = Types.LoggingPipelineBehavior.MakeGenericType(modelType);
                 var behavior = Types.PipelineBehavior.MakeGenericType(getRequest, modelType);
                 services.AddScoped(behavior, loggingBehavior);
             }
@@ -250,8 +258,29 @@
             return services;
         }
 
+        private static IServiceCollection SetupNotifications(this IServiceCollection services, Type modelType, MediatROptions options)
+        {
+            if (!options.UseLoggableNotificationHandler)
+            {
+                return services;
+            }
+
+            var notifications = new List<Type>(Types.Notifications);
+            notifications.AddRange(Types.GenericNotifications.Select(type => type.MakeGenericType(modelType)));
+
+            foreach (var notification in notifications)
+            {
+                var loggableNotificationHandler = Types.LoggableNotificationHandler.MakeGenericType(notification);
+                var notificationHandler = Types.NotificationHandler.MakeGenericType(notification);
+                services.AddScoped(notificationHandler, loggableNotificationHandler);
+            }
+
+            return services;
+        }
+
         private static class Types
         {
+            internal static readonly Type Queryable = typeof(IQueryable<>);
             internal static readonly Type List = typeof(List<>);
             internal static readonly Type Unit = typeof(Unit);
 
@@ -261,6 +290,7 @@
             internal static readonly Type CommandRequestHandler = typeof(CommandRequestHandler<>);
 
             // Requests
+            internal static readonly Type QueryRequest = typeof(QueryRequest<>);
             internal static readonly Type GetRequest = typeof(GetRequest<>);
             internal static readonly Type GetRangeRequest = typeof(GetRangeRequest<>);
 
@@ -275,7 +305,33 @@
             };
 
             // Notification Handlers
+            internal static readonly Type NotificationHandler = typeof(INotificationHandler<>);
             internal static readonly Type LoggableNotificationHandler = typeof(LoggableNotificationHandler<>);
+
+            // Notifications
+            internal static readonly Type[] Notifications =
+            {
+                typeof(CreateNotification),
+                typeof(CreateRangeNotification),
+                typeof(DeleteNotification),
+                typeof(DeleteRangeNotification),
+                typeof(GetNotification),
+                typeof(GetRangeNotification),
+                typeof(UpdateNotification),
+                typeof(UpdateRangeNotification)
+            };
+
+            internal static readonly Type[] GenericNotifications =
+            {
+                typeof(CreateNotification<>),
+                typeof(CreateRangeNotification<>),
+                typeof(DeleteNotification<>),
+                typeof(DeleteRangeNotification<>),
+                typeof(GetNotification<>),
+                typeof(GetRangeNotification<>),
+                typeof(UpdateNotification<>),
+                typeof(UpdateRangeNotification<>)
+            };
 
             // Pipeline Behaviors
             internal static readonly Type PipelineBehavior = typeof(IPipelineBehavior<,>);

@@ -44,7 +44,7 @@
     <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
     <PackageReference Include="serilog.formatting.elasticsearch" Version="8.0.1" />
-    <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="3.0.4" />
+    <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="3.1.0" />
     <PackageReference Include="Serilog.Sinks.AzureBlobStorage" Version="1.4.0" />
     <PackageReference Include="serilog.sinks.elasticsearch" Version="8.0.1" />
     <PackageReference Include="Serilog.Sinks.EventLog" Version="3.1.0" />
