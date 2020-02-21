@@ -4,8 +4,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Diagnostics;
     using JetBrains.Annotations;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using Mvc;
     using Mvc.Abstractions;
     using Mvc.Infrastructure;
@@ -63,6 +65,13 @@
 
             result.ContentTypes.Add("application/problem+json");
             result.ContentTypes.Add("application/problem+xml");
+            var error = context.Features.Get<IExceptionHandlerFeature>().Error;
+            var logger = context.RequestServices.GetService<ILogger<HttpContext>>();
+            if (error != default)
+            {
+                logger?.LogError(error, string.Empty);
+            }
+
             var executor = context.RequestServices.GetRequiredService<IActionResultExecutor<ObjectResult>>();
             return executor.ExecuteAsync(actionContext, result);
         }
