@@ -83,7 +83,7 @@
             foreach (var apiVersionDescription in _apiVersionDescriptionProvider.ApiVersionDescriptions)
             {
                 var name = apiVersionDescription.GroupName;
-                var url = $"/swagger/{name}/swagger.json";
+                var url = $"./swagger/{name}/swagger.json";
                 options.SwaggerEndpoint(url, name);
             }
 
