@@ -18,7 +18,7 @@
     public class GetNotification<T> : INotification, ILoggable
         where T : class
     {
-        private static readonly Action<ILogger, T, Exception> LogAction = Define<T>(Information, GetEnd, "{@Model}");
+        private static readonly Action<ILogger, T, Exception> LogAction = Define<T>(Information, ReadEnd, "{@Model}");
 
         private readonly T _model;
         private readonly ILogger _logger;

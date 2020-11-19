@@ -15,7 +15,7 @@
     {
         /// <summary>Gets or sets the route prefix.</summary>
         /// <value>The route prefix.</value>
-        public string RoutePrefix { get; set; }
+        public string RoutePrefix { get; set; } = "swagger";
 
         /// <summary>Gets or sets the XML comments file path.</summary>
         /// <value>The XML comments file path.</value>

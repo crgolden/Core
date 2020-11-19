@@ -40,20 +40,28 @@
             _options.Info = _options.Info ?? new OpenApiInfo();
             foreach (var apiVersionDescription in _apiVersionDescriptionProvider.ApiVersionDescriptions)
             {
-                _options.Info.Version = $"{apiVersionDescription.ApiVersion}";
+                var sb = new StringBuilder();
+                if (!IsNullOrWhiteSpace(_options.Info.Description))
+                {
+                    sb.Append(_options.Info.Description);
+                }
+
                 if (apiVersionDescription.IsDeprecated)
                 {
-                    var sb = new StringBuilder();
-                    if (!IsNullOrWhiteSpace(_options.Info.Description))
+                    if (sb.Length > 0)
                     {
-                        sb.Append(_options.Info.Description);
                         sb.AppendLine();
                     }
 
                     sb.Append("This API version has been deprecated".ToUpperInvariant());
+                }
+
+                if (sb.Length > 0)
+                {
                     _options.Info.Description = sb.ToString();
                 }
 
+                _options.Info.Version = $"{apiVersionDescription.ApiVersion}";
                 options.SwaggerDoc(apiVersionDescription.GroupName, _options.Info);
             }
 
@@ -87,21 +95,17 @@
                 options.SwaggerEndpoint(url, name);
             }
 
-            if (!IsNullOrWhiteSpace(_options.RoutePrefix))
-            {
-                options.RoutePrefix = _options.RoutePrefix;
-            }
-
+            options.RoutePrefix = _options.RoutePrefix;
             if (IsNullOrWhiteSpace(_options.Info?.Title))
             {
                 return;
             }
 
-            var sb = new StringBuilder(_options.Info?.Title);
+            var sb = new StringBuilder(_options.Info.Title);
             if (!IsNullOrWhiteSpace(_options.Info?.Description))
             {
                 sb.AppendLine();
-                sb.Append($"{_options.Info.Description}");
+                sb.Append(_options.Info.Description);
             }
 
             options.DocumentTitle = sb.ToString();

@@ -17,7 +17,7 @@
     [PublicAPI]
     public class GetNotification : INotification, ILoggable
     {
-        private static readonly Action<ILogger, IReadOnlyCollection<object>, Exception> LogAction = Define<IReadOnlyCollection<object>>(Information, GetStart, "{@KeyValues}");
+        private static readonly Action<ILogger, IReadOnlyCollection<object>, Exception> LogAction = Define<IReadOnlyCollection<object>>(Information, ReadStart, "{@KeyValues}");
 
         private readonly IReadOnlyCollection<object> _keyValues;
         private readonly ILogger _logger;

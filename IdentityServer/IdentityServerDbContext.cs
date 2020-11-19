@@ -15,7 +15,8 @@
 
     /// <inheritdoc cref="IdentityDbContext" />
     [PublicAPI]
-    public class IdentityServerDbContext : IdentityDbContext<User, Role, Guid, Entities.UserClaim, UserRole, UserLogin, RoleClaim, UserToken>,
+    public class IdentityServerDbContext :
+        IdentityDbContext<User, Role, Guid, Entities.UserClaim, UserRole, UserLogin, RoleClaim, UserToken>,
         IConfigurationDbContext,
         IPersistedGrantDbContext
     {
@@ -39,11 +40,17 @@
         /// <inheritdoc />
         public virtual DbSet<Client> Clients { get; set; }
 
+        /// <inheritdoc/>
+        public virtual DbSet<ClientCorsOrigin> ClientCorsOrigins { get; set; }
+
         /// <inheritdoc />
         public virtual DbSet<IdentityResource> IdentityResources { get; set; }
 
         /// <inheritdoc />
         public virtual DbSet<ApiResource> ApiResources { get; set; }
+
+        /// <inheritdoc />
+        public virtual DbSet<ApiScope> ApiScopes { get; set; }
 
         /// <inheritdoc />
         public virtual DbSet<PersistedGrant> PersistedGrants { get; set; }
@@ -59,8 +66,7 @@
         /// <value>The operational store options.</value>
         protected OperationalStoreOptions OperationalStoreOptions { get; }
 
-        /// <inheritdoc cref="IConfigurationDbContext.SaveChangesAsync" />
-        /// <inheritdoc cref="IPersistedGrantDbContext.SaveChangesAsync" />
+        /// <inheritdoc />
         public virtual Task<int> SaveChangesAsync() => base.SaveChangesAsync();
 
         /// <inheritdoc />

@@ -19,7 +19,7 @@
     public class GetRangeNotification<T> : INotification, ILoggable
         where T : class
     {
-        private static readonly Action<ILogger, T, Exception> LogAction = Define<T>(Information, GetRangeEnd, "{@Model}");
+        private static readonly Action<ILogger, T, Exception> LogAction = Define<T>(Information, ReadRangeEnd, "{@Model}");
 
         private readonly List<T> _models;
         private readonly ILogger _logger;

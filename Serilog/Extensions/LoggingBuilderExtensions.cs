@@ -9,7 +9,9 @@
     using Options;
     using Serilog;
     using Serilog.Events;
+    using static System.Enum;
     using static System.Reflection.Assembly;
+    using static System.String;
     using static System.StringComparison;
     using static ApplicationInsights.Extensibility.TelemetryConfiguration;
     using static LogLevel;
@@ -241,13 +243,13 @@
 
         private static bool TryGetSwitch(string value, out LogLevel level)
         {
-            if (string.IsNullOrEmpty(value))
+            if (IsNullOrWhiteSpace(value))
             {
                 level = None;
                 return false;
             }
 
-            if (Enum.TryParse(value, true, out level))
+            if (TryParse(value, true, out level))
             {
                 return true;
             }
@@ -305,12 +307,16 @@
                 if (string.Equals("EventLog", rule.ProviderName, OrdinalIgnoreCase))
                 {
                     var source = GetEntryAssembly()?.FullName;
+                    if (IsNullOrWhiteSpace(source))
+                    {
+                        continue;
+                    }
+
                     config.WriteTo.EventLog(source, restrictedToMinimumLevel: categoryLevel ?? Verbose);
                     continue;
                 }
 
-                if (string.Equals("AzureAppServicesBlob", rule.ProviderName, OrdinalIgnoreCase) &&
-                    !string.IsNullOrWhiteSpace(azureBlobConnectionString))
+                if (string.Equals("AzureAppServicesBlob", rule.ProviderName, OrdinalIgnoreCase) && !IsNullOrWhiteSpace(azureBlobConnectionString))
                 {
                     config.WriteTo.AzureBlobStorage(azureBlobConnectionString, categoryLevel ?? Verbose);
                     continue;
@@ -325,22 +331,13 @@
                         telemetryConfiguration = options?.Value;
                     }
 
-                    if (telemetryConfiguration != default)
-                    {
-                        config.WriteTo.ApplicationInsights(telemetryConfiguration, Events, categoryLevel ?? Verbose);
-                    }
-                    else
-                    {
-                        using (telemetryConfiguration = CreateDefault())
-                        {
-                            config.WriteTo.ApplicationInsights(telemetryConfiguration, Events, categoryLevel ?? Verbose);
-                        }
-                    }
-
+#pragma warning disable CA2000 // Dispose objects before losing scope
+                    config.WriteTo.ApplicationInsights(telemetryConfiguration ?? CreateDefault(), Events, categoryLevel ?? Verbose);
+#pragma warning restore CA2000 // Dispose objects before losing scope
                     continue;
                 }
 
-                if (!string.IsNullOrWhiteSpace(rule.CategoryName) && categoryLevel.HasValue)
+                if (!IsNullOrWhiteSpace(rule.CategoryName) && categoryLevel.HasValue)
                 {
                     config.MinimumLevel.Override(rule.CategoryName, categoryLevel.Value);
                 }

@@ -17,7 +17,7 @@
     [PublicAPI]
     public class GetRangeNotification : INotification, ILoggable
     {
-        private static readonly Action<ILogger, Exception> LogAction = Define(Information, GetRangeStart, Empty);
+        private static readonly Action<ILogger, Exception> LogAction = Define(Information, ReadRangeStart, Empty);
 
         private readonly ILogger _logger;
 

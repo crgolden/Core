@@ -21,7 +21,7 @@
             }
 
             var imageExtensions = new[] { ".jpg", ".png", ".gif", ".jpeg" };
-#if NETCOREAPP3_0
+#if NET5_0
             return file.ContentType.Contains("image", InvariantCultureIgnoreCase) ||
                    imageExtensions.Any(x => file.FileName?.EndsWith(x, OrdinalIgnoreCase) == true);
 #else
