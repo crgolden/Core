@@ -2,9 +2,9 @@
 {
     using System;
     using ApplicationInsights.Extensibility;
-    using Configuration;
     using Core;
     using DependencyInjection;
+    using Extensions.Configuration;
     using JetBrains.Annotations;
     using Options;
     using Serilog;

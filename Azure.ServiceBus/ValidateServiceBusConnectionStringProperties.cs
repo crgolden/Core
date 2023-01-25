@@ -1,6 +1,7 @@
 ﻿namespace Core
 {
     using System;
+    using Azure.Messaging.ServiceBus;
     using JetBrains.Annotations;
     using Microsoft.Extensions.Options;
     using static System.String;
@@ -8,10 +9,10 @@
 
     /// <inheritdoc />
     [PublicAPI]
-    public class ValidateServiceBusOptions : IValidateOptions<ServiceBusOptions>
+    public class ValidateServiceBusConnectionStringProperties : IValidateOptions<ServiceBusConnectionStringProperties>
     {
         /// <inheritdoc />
-        public ValidateOptionsResult Validate(string name, ServiceBusOptions options)
+        public ValidateOptionsResult Validate(string name, ServiceBusConnectionStringProperties options)
         {
             if (options == default)
             {
@@ -19,11 +20,11 @@
             }
 
             return IsNullOrWhiteSpace(options.EntityPath) ||
-                   IsNullOrWhiteSpace(options.Endpoint) ||
+                   options.Endpoint == default ||
                    IsNullOrWhiteSpace(options.SharedAccessKeyName) ||
-                   (IsNullOrWhiteSpace(options.PrimaryKey) && IsNullOrWhiteSpace(options.SecondaryKey)) ||
-                   options.TransportType == default
-                ? Fail($"'{nameof(ServiceBusOptions)}' section is invalid")
+                   IsNullOrWhiteSpace(options.SharedAccessKey) ||
+                   IsNullOrWhiteSpace(options.FullyQualifiedNamespace)
+                ? Fail($"'{nameof(ValidateServiceBusConnectionStringProperties)}' section is invalid")
                 : Success;
         }
     }

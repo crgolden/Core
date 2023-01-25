@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
-    using Common;
+    using Common.Abilities;
     using JetBrains.Annotations;
     using MediatR;
     using Microsoft.Extensions.Logging;

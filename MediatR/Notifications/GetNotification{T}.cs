@@ -2,7 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Common;
+    using Common.Abilities;
     using JetBrains.Annotations;
     using MediatR;
     using Microsoft.Extensions.Logging;

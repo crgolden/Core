@@ -6,6 +6,7 @@
     using System.Text.Json.Serialization;
     using JetBrains.Annotations;
     using static System.Reflection.BindingFlags;
+    using static System.StringComparison;
     using static System.Text.Json.JsonTokenType;
 
     /// <inheritdoc />
@@ -28,7 +29,7 @@
                     case PropertyName:
                     {
                         var propertyName = reader.GetString();
-                        var property = properties.SingleOrDefault(x => string.Equals(x.Name, propertyName, StringComparison.InvariantCultureIgnoreCase) && x.CanWrite);
+                        var property = properties.SingleOrDefault(x => string.Equals(x.Name, propertyName, InvariantCultureIgnoreCase) && x.CanWrite);
                         if (property == default || !reader.Read())
                         {
                             throw new JsonException();
@@ -77,8 +78,7 @@
                                 break;
                             case True:
                             case False:
-                                if ((property.PropertyType == typeof(bool) || property.PropertyType == typeof(bool?)) &&
-                                    bool.TryParse(reader.GetString(), out var boolValue))
+                                if ((property.PropertyType == typeof(bool) || property.PropertyType == typeof(bool?)) && bool.TryParse(reader.GetString(), out var boolValue))
                                 {
                                     property.SetValue(value, boolValue);
                                 }
@@ -89,27 +89,65 @@
                                 {
                                     property.SetValue(value, reader.GetString());
                                 }
-                                else if ((property.PropertyType == typeof(DateTime) || property.PropertyType == typeof(DateTime?)) &&
-                                     reader.TryGetDateTime(out var dateTimeValue))
+                                else if ((property.PropertyType == typeof(DateTime) || property.PropertyType == typeof(DateTime?)) && reader.TryGetDateTime(out var dateTimeValue))
                                 {
                                     property.SetValue(value, dateTimeValue);
                                 }
-                                else if ((property.PropertyType == typeof(DateTimeOffset) || property.PropertyType == typeof(DateTimeOffset?)) &&
-                                         reader.TryGetDateTimeOffset(out var dateTimeOffsetValue))
+                                else if ((property.PropertyType == typeof(DateTimeOffset) || property.PropertyType == typeof(DateTimeOffset?)) && reader.TryGetDateTimeOffset(out var dateTimeOffsetValue))
                                 {
                                     property.SetValue(value, dateTimeOffsetValue);
                                 }
-                                else if ((property.PropertyType == typeof(Guid) || property.PropertyType == typeof(Guid?)) &&
-                                         reader.TryGetGuid(out var guidValue))
+                                else if ((property.PropertyType == typeof(Guid) || property.PropertyType == typeof(Guid?)) && reader.TryGetGuid(out var guidValue))
                                 {
                                     property.SetValue(value, guidValue);
                                 }
 
                                 break;
+                            case None:
+                                break;
+                            case StartObject:
+                                break;
+                            case EndObject:
+                                break;
+                            case StartArray:
+                                break;
+                            case EndArray:
+                                break;
+                            case PropertyName:
+                                break;
+                            case Comment:
+                                break;
+                            case Null:
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException(nameof(reader));
                         }
 
                         break;
                     }
+
+                    case None:
+                        break;
+                    case StartObject:
+                        break;
+                    case StartArray:
+                        break;
+                    case EndArray:
+                        break;
+                    case Comment:
+                        break;
+                    case JsonTokenType.String:
+                        break;
+                    case Number:
+                        break;
+                    case True:
+                        break;
+                    case False:
+                        break;
+                    case Null:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(reader));
                 }
             }
 

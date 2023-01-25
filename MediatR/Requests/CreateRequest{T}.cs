@@ -1,7 +1,8 @@
 ﻿namespace Core.Requests
 {
     using System;
-    using Common;
+    using Common.Abilities;
+    using Common.Services;
     using JetBrains.Annotations;
     using MediatR;
     using Microsoft.Extensions.Logging;

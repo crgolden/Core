@@ -40,7 +40,7 @@
         }
 
         /// <inheritdoc />
-        public Task<T> Handle(GetRequest<T> request, CancellationToken cancellationToken, RequestHandlerDelegate<T> next)
+        public Task<T> Handle(GetRequest<T> request, RequestHandlerDelegate<T> next, CancellationToken cancellationToken = default)
         {
             if (request == default)
             {
@@ -74,7 +74,7 @@
         }
 
         /// <inheritdoc />
-        public Task<List<T>> Handle(GetRangeRequest<T> request, CancellationToken cancellationToken, RequestHandlerDelegate<List<T>> next)
+        public Task<List<T>> Handle(GetRangeRequest<T> request, RequestHandlerDelegate<List<T>> next, CancellationToken cancellationToken = default)
         {
             if (request == default)
             {
@@ -108,7 +108,7 @@
         }
 
         /// <inheritdoc />
-        public Task<Unit> Handle(CreateRequest<T> request, CancellationToken cancellationToken, RequestHandlerDelegate<Unit> next)
+        public Task<Unit> Handle(CreateRequest<T> request, RequestHandlerDelegate<Unit> next, CancellationToken cancellationToken = default)
         {
             if (request == default)
             {
@@ -142,7 +142,7 @@
         }
 
         /// <inheritdoc />
-        public Task<Unit> Handle(CreateRangeRequest<T> request, CancellationToken cancellationToken, RequestHandlerDelegate<Unit> next)
+        public Task<Unit> Handle(CreateRangeRequest<T> request, RequestHandlerDelegate<Unit> next, CancellationToken cancellationToken = default)
         {
             if (request == default)
             {
@@ -176,7 +176,7 @@
         }
 
         /// <inheritdoc />
-        public Task<Unit> Handle(UpdateRequest<T> request, CancellationToken cancellationToken, RequestHandlerDelegate<Unit> next)
+        public Task<Unit> Handle(UpdateRequest<T> request, RequestHandlerDelegate<Unit> next, CancellationToken cancellationToken = default)
         {
             if (request == default)
             {
@@ -210,7 +210,7 @@
         }
 
         /// <inheritdoc />
-        public Task<Unit> Handle(UpdateRangeRequest<T> request, CancellationToken cancellationToken, RequestHandlerDelegate<Unit> next)
+        public Task<Unit> Handle(UpdateRangeRequest<T> request, RequestHandlerDelegate<Unit> next, CancellationToken cancellationToken = default)
         {
             if (request == default)
             {
@@ -244,7 +244,7 @@
         }
 
         /// <inheritdoc />
-        public Task<Unit> Handle(DeleteRequest<T> request, CancellationToken cancellationToken, RequestHandlerDelegate<Unit> next)
+        public Task<Unit> Handle(DeleteRequest<T> request, RequestHandlerDelegate<Unit> next, CancellationToken cancellationToken = default)
         {
             if (request == default)
             {
@@ -278,7 +278,7 @@
         }
 
         /// <inheritdoc />
-        public Task<Unit> Handle(DeleteRangeRequest<T> request, CancellationToken cancellationToken, RequestHandlerDelegate<Unit> next)
+        public Task<Unit> Handle(DeleteRangeRequest<T> request, RequestHandlerDelegate<Unit> next, CancellationToken cancellationToken = default)
         {
             if (request == default)
             {

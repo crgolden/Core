@@ -1,7 +1,7 @@
 ﻿namespace Core.Requests
 {
     using System;
-    using Common;
+    using Common.Abilities;
     using JetBrains.Annotations;
     using Microsoft.Extensions.Logging;
     using static System.Guid;
